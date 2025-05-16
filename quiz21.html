@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulazione Concorso Operatore Socio Sanitario - Modulo 30</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            margin: 0;
+            padding: 20px;
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+            animation: glow 2s infiniteding: 20px;
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; }
+            to { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700; }
+        }
+
+        #timer {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.5em;
+            color: #00eaff;
+            text-shadow: 0 0 5px #00eaff;
+        }
+
+        .question-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .question-box {
+            width: 40px;
+            height: 40px;
+            margin: 8px;
+            background: linear-gradient(45deg, #333, #555);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .question-box:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ffd700;
+        }
+
+        .question-box.answered {
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            box-shadow: 0 0 15px #ffd700;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        .question h3 {
+            margin: 0 0 15px 0;
+            color: #ffffff;
+            font-size: 1.6em;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+            line-height: 1.4;
+        }
+
+        .option {
+            margin: 10px 0;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateX(5px);
+        }
+
+        .option.correct {
+            background: linear-gradient(90deg, #00eaff, #00b8d4);
+            color: #fff;
+            box-shadow: 0 0 15px #00eaff;
+        }
+
+        .option.wrong {
+            background: linear-gradient(90deg, #ff5252, #d81b60);
+            color: #fff;
+            box-shadow: 0 0 15px #ff5252;
+        }
+
+        .lamp {
+            display: none;
+            margin-left: 15px;
+            cursor: pointer;
+            font-size: 1.5em;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700;
+            transition: transform 0.3s ease;
+        }
+
+        .lamp:hover {
+            transform: scale(1.2);
+        }
+
+        .explanation {
+            margin-top: 15px;
+            font-style: italic;
+            color: #f0f0f0;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            animation: slideIn 0.5s ease;
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .nav-button {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 0 10px #ffd700;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .nav-button:disabled {
+            background: #666;
+            color: #ccc;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #ffd700;
+        }
+
+        button#submit {
+            display: block;
+            width: 250px;
+            margin: 20px auto;
+            padding: 15px;
+            background: linear-gradient(45deg, #00eaff, #00b8d4);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.3em;
+            box-shadow: 0 0 15px #00eaff;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        button#submit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px #00eaff;
+        }
+
+        #result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.8em;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Simulazione Concorso Operatore Socio Sanitario - Modulo 30</h1>
+        <div class="question-nav" id="questionNav"></div>
+        <div id="timer">Tempo rimanente: <span id="time">30:00</span></div>
+        <div id="quiz"></div>
+        <div class="navigation">
+            <button class="nav-button" id="prev" disabled>⬅ Indietro</button>
+            <button class="nav-button" id="next">Avanti ➡</button>
+        </div>
+        <button id="submit">Invia Risposte</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Array di domande (871-900) con opzioni riordinate casualmente
+        const questions = [
+            {
+                question: "Cos’è l’ictus cerebrale?",
+                options: ["Un’infezione del cervello", "Un’interruzione del flusso sanguigno cerebrale", "Un accumulo di liquido nel cranio"],
+                correct: "Un’interruzione del flusso sanguigno cerebrale",
+                explanation: "L’ictus cerebrale è un evento acuto causato dall’interruzione del flusso sanguigno a una parte del cervello (ictus ischemico) o da un’emorragia cerebrale (ictus emorragico), che porta a danni neurologici. I sintomi includono debolezza improvvisa, afasia, perdita di equilibrio o visione. Non è un’infezione del cervello (encefalite) né un accumulo di liquido nel cranio (idrocefalo). Gli Operatori Socio-Sanitari (OSS) devono monitorare i segni neurologici, garantire la sicurezza del paziente (es. prevenzione cadute), assistere nella mobilizzazione, e segnalare immediatamente sintomi come peggioramento della debolezza o confusione."
+            },
+            {
+                question: "Quale è un segno tipico dell’ictus cerebrale?",
+                options: ["Ittero", "Debolezza unilaterale improvvisa", "Poliuria"],
+                correct: "Debolezza unilaterale improvvisa",
+                explanation: "La debolezza unilaterale improvvisa, spesso a un lato del corpo (emiparesi), è un segno tipico dell’ictus cerebrale, accompagnata da afasia, deviazione del volto o difficoltà visive. È un’emergenza medica che richiede intervento rapido. La poliuria (aumento della produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono osservare i sintomi utilizzando la scala FAST (Face, Arms, Speech, Time), mantenere il paziente in posizione sicura, monitorare i parametri vitali, e segnalare all’infermiere qualsiasi cambiamento neurologico."
+            },
+            {
+                question: "Cos’è l’epilessia?",
+                options: ["Un accumulo di liquido nel cervello", "Un disturbo con crisi convulsive ricorrenti", "Un’infezione del sistema nervoso"],
+                correct: "Un disturbo con crisi convulsive ricorrenti",
+                explanation: "L’epilessia è un disturbo neurologico cronico caratterizzato da crisi convulsive ricorrenti, dovute a scariche elettriche anomale nel cervello. Le crisi possono essere focali (es. scatti di un arto) o generalizzate (es. convulsioni tonico-cloniche). Non è un’infezione del sistema nervoso (meningite) né un accumulo di liquido nel cervello (idrocefalo). Gli OSS devono garantire la sicurezza durante una crisi (es. rimuovere oggetti pericolosi), posizionare il paziente su un fianco dopo la crisi, monitorare la durata della crisi, e segnalare all’infermiere episodi prolungati o ricorrenti."
+            },
+            {
+                question: "Quale è un segno tipico di una crisi convulsiva generalizzata?",
+                options: ["Convulsioni tonico-cloniche", "Oliguria", "Ittero"],
+                correct: "Convulsioni tonico-cloniche",
+                explanation: "Le convulsioni tonico-cloniche, caratterizzate da rigidità muscolare (fase tonica) seguita da scatti ritmici (fase clonica), sono un segno tipico di una crisi convulsiva generalizzata, accompagnate da perdita di coscienza e possibile incontinenza. La crisi dura solitamente 1-3 minuti. L’oliguria (ridotta produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono cronometrare la crisi, proteggere il paziente da lesioni, evitare di inserire oggetti in bocca, e segnalare all’infermiere crisi che durano oltre 5 minuti o si ripetono."
+            },
+            {
+                question: "Cos’è la malattia di Parkinson?",
+                options: ["Un’infezione cerebrale", "Un disturbo neurodegenerativo motorio", "Un accumulo di liquido nel cervello"],
+                correct: "Un disturbo neurodegenerativo motorio",
+                explanation: "La malattia di Parkinson è un disturbo neurodegenerativo cronico causato dalla perdita di neuroni dopaminergici nella substantia nigra, che porta a sintomi motori come tremore a riposo, rigidità, bradicinesia e instabilità posturale. Può includere sintomi non motori come depressione o demenza. Non è un’infezione cerebrale (encefalite) né un accumulo di liquido nel cervello (idrocefalo). Gli OSS devono assistere nella mobilizzazione, prevenire cadute, garantire l’assunzione di farmaci antiparkinsoniani, e segnalare sintomi come difficoltà di deglutizione o peggioramento del tremore."
+            },
+            {
+                question: "Quale è un segno tipico della malattia di Parkinson?",
+                options: ["Tremore a riposo", "Poliuria", "Ittero"],
+                correct: "Tremore a riposo",
+                explanation: "Il tremore a riposo, spesso unilaterale e a bassa frequenza (4-6 Hz), è un segno tipico della malattia di Parkinson, visibile soprattutto nelle mani (‘tremore a conta pillole’). È accompagnato da rigidità e bradicinesia. La poliuria (aumento della produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono osservare la mobilità del paziente, fornire ausili come bastoni, garantire un ambiente sicuro, e segnalare all’infermiere sintomi come cadute frequenti o rigidità marcata."
+            },
+            {
+                question: "Cos’è la sclerosi multipla?",
+                options: ["Un accumulo di liquido nel midollo spinale", "Una malattia autoimmune demielinizzante", "Un’infezione del sistema nervoso"],
+                correct: "Una malattia autoimmune demielinizzante",
+                explanation: "La sclerosi multipla è una malattia autoimmune cronica che causa la demielinizzazione delle fibre nervose nel sistema nervoso centrale, portando a sintomi variabili come debolezza, spasticità, disturbi visivi e fatica. È caratterizzata da episodi acuti (poussées) e remissioni. Non è un’infezione del sistema nervoso (meningite) né un accumulo di liquido nel midollo spinale. Gli OSS devono monitorare la mobilità, assistere nelle attività quotidiane, garantire il riposo, e segnalare sintomi come peggioramento della spasticità o nuove difficoltà visive."
+            },
+            {
+                question: "Quale è un segno tipico della sclerosi multipla?",
+                options: ["Ittero", "Debolezza muscolare intermittente", "Oliguria"],
+                correct: "Debolezza muscolare intermittente",
+                explanation: "La debolezza muscolare intermittente, spesso associata a fatica e aggravata dal calore (segno di Uhthoff), è un segno tipico della sclerosi multipla, dovuta alla demielinizzazione. Può essere accompagnata da spasticità o parestesie. L’oliguria (ridotta produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono osservare i sintomi durante le attività, evitare esposizioni al calore, fornire ausili per la mobilità, e segnalare all’infermiere nuovi sintomi o riacutizzazioni."
+            },
+            {
+                question: "Cos’è la demenza di Alzheimer?",
+                options: ["Un’infezione cerebrale", "Un disturbo neurodegenerativo cognitivo", "Un accumulo di liquido nel cervello"],
+                correct: "Un disturbo neurodegenerativo cognitivo",
+                explanation: "La demenza di Alzheimer è un disturbo neurodegenerativo progressivo che causa declino cognitivo, con perdita di memoria, difficoltà di linguaggio e alterazioni comportamentali. È associata all’accumulo di placche amiloidi e grovigli neurofibrillari nel cervello. Non è un’infezione cerebrale (encefalite) né un accumulo di liquido nel cervello (idrocefalo). Gli OSS devono monitorare il comportamento, garantire un ambiente sicuro, assistere nelle attività quotidiane, e segnalare cambiamenti come agitazione o confusione."
+            },
+            {
+                question: "Quale è un segno tipico della demenza di Alzheimer?",
+                options: ["Perdita di memoria a breve termine", "Poliuria", "Ittero"],
+                correct: "Perdita di memoria a breve termine",
+                explanation: "La perdita di memoria a breve termine, come difficoltà a ricordare eventi recenti, è un segno tipico della demenza di Alzheimer, accompagnata da disorientamento e afasia. La memoria a lungo termine è spesso preservata nelle fasi iniziali. La poliuria (aumento della produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono utilizzare promemoria visivi, mantenere una routine strutturata, garantire la sicurezza, e segnalare all’infermiere sintomi come vagabondaggio o aggressività."
+            },
+            {
+                question: "Cos’è la meningite?",
+                options: ["Un accumulo di liquido nel midollo spinale", "Un’infezione delle meningi", "Un disturbo neurodegenerativo"],
+                correct: "Un’infezione delle meningi",
+                explanation: "La meningite è un’infezione acuta o cronica delle meningi, spesso causata da batteri (es. Neisseria meningitidis) o virus, che provoca febbre, cefalea, rigidità nucale e fotofobia. È un’emergenza medica. Non è un accumulo di liquido nel midollo spinale né un disturbo neurodegenerativo (es. Alzheimer). Gli OSS devono utilizzare dispositivi di protezione individuale (DPI), monitorare i parametri vitali, garantire l’isolamento se necessario, e segnalare sintomi come febbre alta o convulsioni."
+            },
+            {
+                question: "Quale è un segno tipico della meningite batterica?",
+                options: ["Rigidità nucale", "Oliguria", "Ittero"],
+                correct: "Rigidità nucale",
+                explanation: "La rigidità nucale, ovvero la difficoltà a flettere il collo, è un segno tipico della meningite batterica, accompagnata da febbre, cefalea intensa e fotofobia. Può essere associata a petecchie o convulsioni. L’oliguria (ridotta produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono osservare la postura del paziente, garantire un ambiente tranquillo, monitorare la temperatura, e segnalare all’infermiere sintomi come rash petecchiale o alterazione dello stato mentale."
+            },
+            {
+                question: "Cos’è la neuropatia periferica?",
+                options: ["Un’infezione del cervello", "Un danno ai nervi periferici", "Un accumulo di liquido nel midollo spinale"],
+                correct: "Un danno ai nervi periferici",
+                explanation: "La neuropatia periferica è un danno ai nervi periferici, spesso causato da diabete, carenze vitaminiche o tossine, che provoca sintomi come parestesie, debolezza muscolare e dolore urente. Può influire sulla sensibilità e sul movimento. Non è un’infezione del cervello (encefalite) né un accumulo di liquido nel midollo spinale. Gli OSS devono monitorare la sensibilità, prevenire lesioni cutanee, garantire calzature adeguate, e segnalare sintomi come ulcere o peggioramento del dolore."
+            },
+            {
+                question: "Quale è un segno tipico della neuropatia periferica?",
+                options: ["Parestesie distali", "Poliuria", "Ittero"],
+                correct: "Parestesie distali",
+                explanation: "Le parestesie distali, come formicolio o bruciore alle estremità (es. mani e piedi), sono un segno tipico della neuropatia periferica, dovute al danno delle fibre nervose. Possono essere accompagnate da perdita di sensibilità o debolezza. La poliuria (aumento della produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono ispezionare la cute per prevenire piaghe, assistere nella deambulazione, garantire il comfort, e segnalare all’infermiere sintomi come infezioni o cadute."
+            },
+            {
+                question: "Cos’è la sclerosi laterale amiotrofica (SLA)?",
+                options: ["Un accumulo di liquido nel cervello", "Una malattia neurodegenerativa motoria", "Un’infezione del midollo spinale"],
+                correct: "Una malattia neurodegenerativa motoria",
+                explanation: "La sclerosi laterale amiotrofica (SLA) è una malattia neurodegenerativa progressiva che colpisce i motoneuroni, causando debolezza muscolare, fascicolazioni, spasticità e, nelle fasi avanzate, difficoltà respiratorie. Non è un’infezione del midollo spinale né un accumulo di liquido nel cervello (idrocefalo). Gli OSS devono assistere nella mobilizzazione, prevenire le piaghe da decubito, garantire l’uso di dispositivi di supporto respiratorio, e segnalare sintomi come dispnea o difficoltà di deglutizione."
+            },
+            {
+                question: "Quale è un segno tipico della sclerosi laterale amiotrofica?",
+                options: ["Fascicolazioni muscolari", "Oliguria", "Ittero"],
+                correct: "Fascicolazioni muscolari",
+                explanation: "Le fascicolazioni muscolari, ovvero contrazioni involontarie visibili, sono un segno tipico della sclerosi laterale amiotrofica, accompagnate da debolezza progressiva e atrofia muscolare. Possono iniziare in un arto e diffondersi. L’oliguria (ridotta produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono monitorare la forza muscolare, utilizzare ausili per la mobilità, prevenire cadute, e segnalare all’infermiere sintomi come difficoltà respiratorie o spasticità marcata."
+            },
+            {
+                question: "Cos’è il trauma cranico?",
+                options: ["Un’infezione del cervello", "Un danno cerebrale da impatto", "Un accumulo di liquido nel midollo spinale"],
+                correct: "Un danno cerebrale da impatto",
+                explanation: "Il trauma cranico è un danno al cervello causato da un impatto o una forza esterna, che può provocare contusioni, ematomi o edema cerebrale. I sintomi variano da cefalea e confusione a perdita di coscienza o deficit neurologici. Non è un’infezione del cervello (encefalite) né un accumulo di liquido nel midollo spinale. Gli OSS devono monitorare lo stato di coscienza, garantire la posizione corretta del capo, prevenire movimenti bruschi, e segnalare sintomi come vomito, convulsioni o pupille asimmetriche."
+            },
+            {
+                question: "Quale è un segno tipico del trauma cranico grave?",
+                options: ["Ittero", "Perdita di coscienza", "Poliuria"],
+                correct: "Perdita di coscienza",
+                explanation: "La perdita di coscienza, spesso accompagnata da confusione, vomito o deficit neurologici, è un segno tipico del trauma cranico grave, indicativo di possibile ematoma o edema cerebrale. È un’emergenza medica. La poliuria (aumento della produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono utilizzare la scala di Glasgow per valutare la coscienza, mantenere il paziente stabile, monitorare i parametri vitali, e segnalare all’infermiere qualsiasi peggioramento neurologico."
+            },
+            {
+                question: "Cos’è la paralisi cerebrale?",
+                options: ["Un accumulo di liquido nel cervello", "Un disturbo motorio da danno cerebrale", "Un’infezione del sistema nervoso"],
+                correct: "Un disturbo motorio da danno cerebrale",
+                explanation: "La paralisi cerebrale è un gruppo di disturbi motori permanenti causati da un danno cerebrale non progressivo, spesso durante lo sviluppo fetale o neonatale. Provoca spasticità, atassia o movimenti involontari, con possibile impatto cognitivo. Non è un’infezione del sistema nervoso (meningite) né un accumulo di liquido nel cervello (idrocefalo). Gli OSS devono assistere nella mobilizzazione, utilizzare ausili ortopedici, prevenire contratture, e segnalare sintomi come dolore o difficoltà respiratorie."
+            },
+            {
+                question: "Quale è un segno tipico della paralisi cerebrale spastica?",
+                options: ["Spasticità muscolare", "Oliguria", "Ittero"],
+                correct: "Spasticità muscolare",
+                explanation: "La spasticità muscolare, caratterizzata da rigidità e riflessi iperattivi, è un segno tipico della paralisi cerebrale spastica, che limita i movimenti e può causare deformità articolari. È accompagnata da difficoltà motorie. L’oliguria (ridotta produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono eseguire esercizi di stretching se indicati, applicare tutori, garantire il comfort, e segnalare all’infermiere sintomi come convulsioni o infezioni."
+            },
+            {
+                question: "Cos’è la miastenia gravis?",
+                options: ["Un’infezione muscolare", "Una malattia autoimmune neuromuscolare", "Un accumulo di liquido nei muscoli"],
+                correct: "Una malattia autoimmune neuromuscolare",
+                explanation: "La miastenia gravis è una malattia autoimmune che colpisce la giunzione neuromuscolare, causando debolezza muscolare fluttuante, specialmente nei muscoli oculari, facciali e degli arti. È dovuta ad anticorpi contro i recettori dell’acetilcolina. Non è un’infezione muscolare né un accumulo di liquido nei muscoli. Gli OSS devono monitorare la forza muscolare, assistere nelle attività quotidiane, garantire l’assunzione di farmaci (es. piridostigmina), e segnalare sintomi come difficoltà respiratorie o ptosi palpebrale."
+            },
+            {
+                question: "Quale è un segno tipico della miastenia gravis?",
+                options: ["Ittero", "Debolezza muscolare aggravata dall’attività", "Poliuria"],
+                correct: "Debolezza muscolare aggravata dall’attività",
+                explanation: "La debolezza muscolare aggravata dall’attività, che migliora con il riposo, è un segno tipico della miastenia gravis, spesso evidente nei muscoli oculari (ptosi, diplopia) o facciali. Può essere accompagnata da difficoltà di deglutizione. La poliuria (aumento della produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono pianificare le attività per evitare affaticamento, monitorare la respirazione, garantire il riposo, e segnalare all’infermiere sintomi come dispnea o crisi miastenica."
+            },
+            {
+                question: "Cos’è l’encefalite?",
+                options: ["Un accumulo di liquido nel cervello", "Un’infezione del parenchima cerebrale", "Un disturbo neurodegenerativo"],
+                correct: "Un’infezione del parenchima cerebrale",
+                explanation: "L’encefalite è un’infezione acuta o cronica del parenchima cerebrale, spesso causata da virus (es. herpes simplex), che provoca febbre, cefalea, confusione, convulsioni o alterazioni dello stato mentale. Non è un accumulo di liquido nel cervello (idrocefalo) né un disturbo neurodegenerativo (es. Alzheimer). Gli OSS devono utilizzare DPI, monitorare i parametri vitali, garantire un ambiente tranquillo, e segnalare sintomi come convulsioni o peggioramento della coscienza."
+            },
+            {
+                question: "Quale è un segno tipico dell’encefalite virale?",
+                options: ["Confusione mentale", "Oliguria", "Ittero"],
+                correct: "Confusione mentale",
+                explanation: "La confusione mentale, spesso accompagnata da febbre, cefalea e possibile stato comatoso, è un segno tipico dell’encefalite virale, dovuta all’infiammazione cerebrale. Può essere associata a convulsioni o afasia. L’oliguria (ridotta produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono osservare lo stato di coscienza, mantenere il paziente in posizione sicura, monitorare la temperatura, e segnalare all’infermiere sintomi come agitazione o crisi convulsive."
+            },
+            {
+                question: "Cos’è il morbo di Huntington?",
+                options: ["Un’infezione cerebrale", "Una malattia genetica neurodegenerativa", "Un accumulo di liquido nel cervello"],
+                correct: "Una malattia genetica neurodegenerativa",
+                explanation: "Il morbo di Huntington è una malattia genetica neurodegenerativa causata da una mutazione del gene huntingtina, che porta a movimenti involontari (corea), declino cognitivo e alterazioni psichiatriche. È progressiva e incurabile. Non è un’infezione cerebrale (encefalite) né un accumulo di liquido nel cervello (idrocefalo). Gli OSS devono garantire la sicurezza durante i movimenti, assistere nelle attività quotidiane, monitorare il comportamento, e segnalare sintomi come depressione o difficoltà di deglutizione."
+            },
+            {
+                question: "Quale è un segno tipico del morbo di Huntington?",
+                options: ["Poliuria", "Corea", "Ittero"],
+                correct: "Corea",
+                explanation: "La corea, ovvero movimenti involontari rapidi e irregolari, è un segno tipico del morbo di Huntington, accompagnata da difficoltà di coordinazione e declino cognitivo. Può evolvere in rigidità nelle fasi avanzate. La poliuria (aumento della produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono prevenire cadute, utilizzare ausili per la mobilità, garantire un ambiente sicuro, e segnalare all’infermiere sintomi come aggressività o difficoltà respiratorie."
+            },
+            {
+                question: "Cos’è la lesione del midollo spinale?",
+                options: ["Un’infezione del midollo spinale", "Un danno traumatico o non traumatico al midollo", "Un accumulo di liquido nel cervello"],
+                correct: "Un danno traumatico o non traumatico al midollo",
+                explanation: "La lesione del midollo spinale è un danno traumatico (es. incidente) o non traumatico (es. ischemia) al midollo spinale, che causa paralisi, perdita di sensibilità e disfunzioni autonomiche (es. incontinenza). La gravità dipende dal livello della lesione. Non è un’infezione del midollo spinale né un accumulo di liquido nel cervello (idrocefalo). Gli OSS devono prevenire piaghe da decubito, assistere nella mobilizzazione, garantire cateterismi se necessari, e segnalare sintomi come infezioni o spasticità."
+            },
+            {
+                question: "Quale è un segno tipico della lesione midollare cervicale?",
+                options: ["Ittero", "Tetraplegia", "Oliguria"],
+                correct: "Tetraplegia",
+                explanation: "La tetraplegia, ovvero la paralisi di tutti e quattro gli arti, è un segno tipico della lesione midollare cervicale, accompagnata da perdita di sensibilità e possibile insufficienza respiratoria. La gravità dipende dall’altezza della lesione. L’oliguria (ridotta produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono utilizzare dispositivi di supporto (es. collare cervicale), monitorare la respirazione, prevenire complicanze, e segnalare all’infermiere sintomi come dispnea o infezioni urinarie."
+            },
+            {
+                question: "Cos’è la nevralgia del trigemino?",
+                options: ["Un accumulo di liquido nel cervello", "Un dolore facciale neuropatico", "Un’infezione del sistema nervoso"],
+                correct: "Un dolore facciale neuropatico",
+                explanation: "La nevralgia del trigemino è un disturbo neuropatico cronico caratterizzato da dolore facciale intenso, parossistico e unilaterale, spesso scatenato da stimoli come il tocco o il freddo. È dovuto a un’irritazione del nervo trigemino. Non è un’infezione del sistema nervoso (meningite) né un accumulo di liquido nel cervello (idrocefalo). Gli OSS devono evitare stimoli scatenanti (es. correnti d’aria), garantire l’assunzione di farmaci (es. carbamazepina), monitorare il dolore, e segnalare sintomi come depressione o dolore persistente."
+            },
+            {
+                question: "Quale è un segno tipico della nevralgia del trigemino?",
+                options: ["Dolore facciale parossistico", "Poliuria", "Ittero"],
+                correct: "Dolore facciale parossistico",
+                explanation: "Il dolore facciale parossistico, descritto come scosse elettriche unilaterali, è un segno tipico della nevralgia del trigemino, spesso limitato a una branca del nervo (es. mandibolare). È scatenato da stimoli leggeri. La poliuria (aumento della produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono osservare i fattori scatenanti, garantire un ambiente caldo, assistere nell’igiene orale, e segnalare all’infermiere sintomi come dolore incontrollato o difficoltà alimentari."
+            },
+            {
+                question: "Cos’è la polineuropatia diabetica?",
+                options: ["Un’infezione dei nervi periferici", "Un danno nervoso da diabete", "Un accumulo di liquido nei nervi"],
+                correct: "Un danno nervoso da diabete",
+                explanation: "La polineuropatia diabetica è un danno cronico ai nervi periferici causato da iperglicemia prolungata nel diabete, che provoca parestesie, dolore urente e perdita di sensibilità, soprattutto agli arti inferiori. Aumenta il rischio di ulcere. Non è un’infezione dei nervi né un accumulo di liquido nei nervi. Gli OSS devono ispezionare la cute per prevenire piaghe, garantire calzature protettive, monitorare la glicemia, e segnalare sintomi come infezioni o dolore neuropatico."
+            },
+            {
+                question: "Quale è un segno tipico della polineuropatia diabetica?",
+                options: ["Oliguria", "Parestesie simmetriche ai piedi", "Ittero"],
+                correct: "Parestesie simmetriche ai piedi",
+                explanation: "Le parestesie simmetriche ai piedi, come formicolio o bruciore, sono un segno tipico della polineuropatia diabetica, dovute al danno delle fibre nervose sensitive. Possono evolvere in perdita di sensibilità. L’oliguria (ridotta produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono controllare la cute dei piedi, evitare traumi, garantire il controllo glicemico, e segnalare all’infermiere sintomi come ulcere o infezioni."
+            },
+            {
+                question: "Cos’è la sindrome di Guillain-Barré?",
+                options: ["Un accumulo di liquido nel midollo spinale", "Una neuropatia autoimmune acuta", "Un’infezione cerebrale"],
+                correct: "Una neuropatia autoimmune acuta",
+                explanation: "La sindrome di Guillain-Barré è una neuropatia autoimmune acuta che causa demielinizzazione dei nervi periferici, spesso successiva a un’infezione virale. Provoca debolezza muscolare ascendente, parestesie e, nei casi gravi, paralisi respiratoria. Non è un’infezione cerebrale (encefalite) né un accumulo di liquido nel midollo spinale. Gli OSS devono monitorare la respirazione, assistere nella mobilizzazione, prevenire piaghe da decubito, e segnalare sintomi come dispnea o debolezza progressiva."
+            },
+            {
+                question: "Quale è un segno tipico della sindrome di Guillain-Barré?",
+                options: ["Debolezza muscolare ascendente", "Poliuria", "Ittero"],
+                correct: "Debolezza muscolare ascendente",
+                explanation: "La debolezza muscolare ascendente, che inizia dagli arti inferiori e progredisce verso l’alto, è un segno tipico della sindrome di Guillain-Barré, accompagnata da parestesie e perdita dei riflessi. Può evolvere rapidamente. La poliuria (aumento della produzione di urina) e l’ittero (colorazione giallastra della pelle) non sono correlati. Gli OSS devono osservare la progressione della debolezza, garantire la sicurezza, monitorare i parametri vitali, e segnalare all’infermiere sintomi come difficoltà respiratorie o aritmie."
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        // Carica i quadratini di navigazione
+        function loadQuestionNav() {
+            const navDiv = document.getElementById("questionNav");
+            questions.forEach((_, index) => {
+                const box = document.createElement("div");
+                box.classList.add("question-box");
+                box.textContent = index + 1;
+                box.addEventListener("click", () => {
+                    showQuestion(index);
+                });
+                navDiv.appendChild(box);
+            });
+        }
+
+        // Carica il quiz
+        function loadQuiz() {
+            const quizDiv = document.getElementById("quiz");
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+                questionDiv.id = `question-${index}`;
+                questionDiv.innerHTML = `
+                    <h3>${index + 1}. ${q.question}</h3>
+                    ${q.options.map((opt, i) => `
+                        <div class="option" data-value="${opt}">
+                            <input type="radio" name="q${index}" value="${opt}" id="q${index}_${i}">
+                            <label for="q${index}_${i}">${opt}</label>
+                            <span class="lamp" id="lamp-${index}-${i}">💡</span>
+                        </div>
+                    `).join("")}
+                    <div class="explanation" id="exp-${index}">${q.explanation}</div>
+                `;
+                quizDiv.appendChild(questionDiv);
+
+                // Aggiungi evento per accendere il quadratino
+                const radios = questionDiv.querySelectorAll(`input[name="q${index}"]`);
+                radios.forEach(radio => {
+                    radio.addEventListener("change", () => {
+                        document.querySelectorAll(".question-box")[index].classList.add("answered");
+                    });
+                });
+            });
+            showQuestion(0); // Mostra la prima domanda
+        }
+
+        // Mostra la domanda corrente
+        function showQuestion(index) {
+            document.querySelectorAll(".question").forEach(q => q.classList.remove("active"));
+            document.getElementById(`question-${index}`).classList.add("active");
+            currentQuestion = index;
+
+            // Gestione stato pulsanti
+            document.getElementById("prev").disabled = currentQuestion === 0;
+            document.getElementById("next").disabled = currentQuestion === questions.length - 1;
+        }
+
+        // Timer (30 minuti)
+        let timeLeft = 30 * 60;
+        function startTimer() {
+            const timer = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById("time").textContent = 
+                    `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    checkAnswers();
+                }
+            }, 1000);
+        }
+
+        // Controllo risposte e feedback visivo
+        function checkAnswers() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const options = document.querySelectorAll(`#question-${index} .option`);
+
+                options.forEach(option => {
+                    const value = option.getAttribute("data-value");
+                    if (value === q.correct) {
+                        option.classList.add("correct");
+                        const lamp = option.querySelector(".lamp");
+                        lamp.style.display = "inline";
+                        lamp.addEventListener("click", () => {
+                            const explanation = document.getElementById(`exp-${index}`);
+                            explanation.style.display = "block";
+                        });
+                    }
+                });
+
+                if (selected) {
+                    if (selected.value === q.correct) {
+                        score++;
+                    } else {
+                        selected.parentElement.classList.add("wrong");
+                    }
+                }
+            });
+
+            const resultDiv = document.getElementById("result");
+            resultDiv.textContent = `Punteggio: ${score} / ${questions.length}`;
+            document.getElementById("submit").disabled = true;
+            document.getElementById("prev").disabled = true;
+            document.getElementById("next").disabled = true;
+
+            // Disabilita i radio button dopo l'invio
+            document.querySelectorAll("input[type=radio]").forEach(radio => {
+                radio.disabled = true;
+            });
+        }
+
+        // Inizializzazione
+        window.onload = () => {
+            loadQuestionNav();
+            loadQuiz();
+            startTimer();
+
+            document.getElementById("prev").addEventListener("click", () => {
+                if (currentQuestion > 0) showQuestion(currentQuestion - 1);
+            });
+
+            document.getElementById("next").addEventListener("click", () => {
+                if (currentQuestion < questions.length - 1) showQuestion(currentQuestion + 1);
+            });
+
+            document.getElementById("submit").addEventListener("click", checkAnswers);
+        };
+    </script>
+</body>
+</html>
